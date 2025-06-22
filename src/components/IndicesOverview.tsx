@@ -16,42 +16,42 @@ const IndicesOverview = () => {
 
   const indices = [
     {
-      name: 'NIFTY 50',
+      name: 'BSE 50',
       value: '21,456.75',
       change: '+234.80 (+1.11%)',
       isPositive: true,
       description: 'India\'s premier stock market index'
     },
     {
-      name: 'NIFTY BANK',
+      name: 'BANK INDEX',
       value: '46,892.30',
       change: '-145.25 (-0.31%)',
       isPositive: false,
       description: 'Banking sector performance index'
     },
     {
-      name: 'NIFTY IT',
+      name: 'TECH INDEX',
       value: '32,876.90',
       change: '+456.70 (+1.41%)',
       isPositive: true,
       description: 'Information Technology sector index'
     },
     {
-      name: 'NIFTY AUTO',
+      name: 'AUTO INDEX',
       value: '18,234.45',
       change: '+123.67 (+0.68%)',
       isPositive: true,
       description: 'Automobile sector index'
     },
     {
-      name: 'NIFTY PHARMA',
+      name: 'PHARMA INDEX',
       value: '14,567.20',
       change: '-89.45 (-0.61%)',
       isPositive: false,
       description: 'Pharmaceutical sector index'
     },
     {
-      name: 'NIFTY FMCG',
+      name: 'FMCG INDEX',
       value: '56,789.80',
       change: '+234.56 (+0.41%)',
       isPositive: true,
@@ -70,7 +70,7 @@ const IndicesOverview = () => {
         {/* Featured Chart */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>NIFTY 50 - Today's Performance</CardTitle>
+            <CardTitle>BSE 50 - Today's Performance</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">

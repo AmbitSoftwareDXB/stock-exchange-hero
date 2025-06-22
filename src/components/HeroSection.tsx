@@ -6,21 +6,21 @@ import { Card, CardContent } from '@/components/ui/card';
 const HeroSection = () => {
   const indices = [
     {
-      name: 'NIFTY 50',
+      name: 'BSE 50',
       value: '21,456.75',
       change: '+234.80',
       percentage: '+1.11%',
       isPositive: true
     },
     {
-      name: 'NIFTY BANK',
+      name: 'BANK INDEX',
       value: '46,892.30',
       change: '-145.25',
       percentage: '-0.31%',
       isPositive: false
     },
     {
-      name: 'NIFTY IT',
+      name: 'TECH INDEX',
       value: '32,876.90',
       change: '+456.70',
       percentage: '+1.41%',
