@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Menu, X, User, Bell, LogOut, Settings, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,22 +15,57 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
-
-  // Check user role
-  const isAuditor = localStorage.getItem('auditorId') !== null;
-  const isMember = localStorage.getItem('memberId') !== null && !isAuditor;
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-
-  // Debug logging
-  console.log('Header authentication state:', {
-    isAuthenticated,
-    isAuditor,
-    isMember,
-    auditorId: localStorage.getItem('auditorId'),
-    memberId: localStorage.getItem('memberId'),
-    userRole: localStorage.getItem('userRole')
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    isAuditor: false,
+    isMember: false,
+    memberId: null,
+    auditorId: null,
   });
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Update auth state on mount and location change
+  useEffect(() => {
+    const updateAuthState = () => {
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      const auditorId = localStorage.getItem('auditorId');
+      const memberId = localStorage.getItem('memberId');
+      const isAuditor = auditorId !== null;
+      const isMember = memberId !== null && !isAuditor;
+
+      const newAuthState = {
+        isAuthenticated,
+        isAuditor,
+        isMember,
+        memberId,
+        auditorId,
+      };
+
+      console.log('Header auth state updated:', {
+        ...newAuthState,
+        currentPath: location.pathname,
+        localStorage: {
+          isAuthenticated: localStorage.getItem('isAuthenticated'),
+          memberId: localStorage.getItem('memberId'),
+          auditorId: localStorage.getItem('auditorId'),
+          userRole: localStorage.getItem('userRole')
+        }
+      });
+
+      setAuthState(newAuthState);
+    };
+
+    updateAuthState();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', updateAuthState);
+    
+    return () => {
+      window.removeEventListener('storage', updateAuthState);
+    };
+  }, [location.pathname]);
 
   // Member navigation items
   const memberNavItems = [
@@ -69,8 +104,8 @@ const Header = () => {
   ];
 
   const getCurrentNavItems = () => {
-    if (isAuditor) return auditorNavItems;
-    if (isMember) return memberNavItems;
+    if (authState.isAuditor) return auditorNavItems;
+    if (authState.isMember) return memberNavItems;
     return guestNavItems;
   };
 
@@ -83,12 +118,22 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    console.log('Logout clicked');
+    console.log('Logout clicked - clearing localStorage');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('memberId');
     localStorage.removeItem('auditorId');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
+    
+    // Update state immediately
+    setAuthState({
+      isAuthenticated: false,
+      isAuditor: false,
+      isMember: false,
+      memberId: null,
+      auditorId: null,
+    });
+    
     navigate('/');
   };
 
@@ -107,14 +152,14 @@ const Header = () => {
           <div className="flex items-center space-x-4 text-sm text-gray-600">
             <span>Market Status: <span className="text-green-600 font-semibold">OPEN</span></span>
             <span>Time: 15:30 IST</span>
-            {isAuthenticated && (
+            {authState.isAuthenticated && (
               <span className="text-blue-600 font-medium">
-                {isAuditor ? 'Auditor Mode' : 'Member Portal'}
+                {authState.isAuditor ? 'Auditor Mode' : 'Member Portal'}
               </span>
             )}
           </div>
           <div className="flex items-center space-x-4">
-            {!isAuthenticated ? (
+            {!authState.isAuthenticated ? (
               <>
                 <button 
                   onClick={handleLoginClick}
@@ -141,7 +186,7 @@ const Header = () => {
             )}
             
             {/* Bell Icon with Dropdown for Authenticated Users */}
-            {isAuthenticated ? (
+            {authState.isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="relative">
@@ -149,9 +194,9 @@ const Header = () => {
                     <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-50">
+                <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-[100]">
                   <DropdownMenuLabel>
-                    {isAuditor ? 'Auditor Account' : 'Member Account'}
+                    {authState.isAuditor ? 'Auditor Account' : 'Member Account'}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate('/dashboard')}>
@@ -210,7 +255,7 @@ const Header = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="text"
-                placeholder={isAuditor ? "Search members, reports..." : "Search stocks, news..."}
+                placeholder={authState.isAuditor ? "Search members, reports..." : "Search stocks, news..."}
                 className="pl-10 w-64"
               />
             </div>
@@ -245,12 +290,12 @@ const Header = () => {
               <div className="pt-4">
                 <Input
                   type="text"
-                  placeholder={isAuditor ? "Search members, reports..." : "Search stocks, news..."}
+                  placeholder={authState.isAuditor ? "Search members, reports..." : "Search stocks, news..."}
                   className="w-full"
                 />
               </div>
               {/* Mobile Logout Option */}
-              {isAuthenticated && (
+              {authState.isAuthenticated && (
                 <div className="pt-4 border-t border-gray-200">
                   <button 
                     onClick={handleLogout}
