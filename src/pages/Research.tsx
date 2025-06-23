@@ -94,6 +94,8 @@ const Research = () => {
   const [selectedStock, setSelectedStock] = useState<typeof mockStocks[0] | null>(null);
   const [watchlist, setWatchlist] = useState<number[]>([]);
 
+  console.log('Research page loaded');
+
   const sectors = ['all', 'Technology', 'Healthcare', 'Financial', 'Automotive', 'Energy'];
   const ratings = ['all', 'Buy', 'Hold', 'Sell'];
 
@@ -120,6 +122,11 @@ const Research = () => {
     );
   };
 
+  const handleNavigation = (path: string) => {
+    console.log(`Navigating to: ${path}`);
+    navigate(path);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - Same as Dashboard */}
@@ -133,25 +140,25 @@ const Research = () => {
               </div>
               <nav className="hidden md:flex items-center space-x-6">
                 <button 
-                  onClick={() => navigate('/dashboard')} 
+                  onClick={() => handleNavigation('/dashboard')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Dashboard
                 </button>
                 <button 
-                  onClick={() => navigate('/trading')} 
+                  onClick={() => handleNavigation('/trading')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Trading
                 </button>
                 <button 
-                  onClick={() => navigate('/portfolio')} 
+                  onClick={() => handleNavigation('/portfolio')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Portfolio
                 </button>
                 <button 
-                  onClick={() => navigate('/research')} 
+                  onClick={() => handleNavigation('/research')} 
                   className="text-blue-600 font-medium"
                 >
                   Research

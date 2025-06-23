@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search, Bell, User, TrendingUp, TrendingDown, Download, Eye, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +9,13 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const navigate = useNavigate();
   
+  console.log('Dashboard page loaded');
+
+  const handleNavigation = (path: string) => {
+    console.log(`Navigating to: ${path}`);
+    navigate(path);
+  };
+
   const complianceData = {
     deadlines: { value: 3, trend: '+10%', isPositive: false },
     status: { value: 'In Progress', trend: '2 pending', isPositive: false },
@@ -90,25 +96,25 @@ const Dashboard = () => {
               </div>
               <nav className="hidden md:flex items-center space-x-6">
                 <button 
-                  onClick={() => navigate('/dashboard')} 
+                  onClick={() => handleNavigation('/dashboard')} 
                   className="text-blue-600 font-medium"
                 >
                   Dashboard
                 </button>
                 <button 
-                  onClick={() => navigate('/trading')} 
+                  onClick={() => handleNavigation('/trading')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Trading
                 </button>
                 <button 
-                  onClick={() => navigate('/portfolio')} 
+                  onClick={() => handleNavigation('/portfolio')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Portfolio
                 </button>
                 <button 
-                  onClick={() => navigate('/research')} 
+                  onClick={() => handleNavigation('/research')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Research
