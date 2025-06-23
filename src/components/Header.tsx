@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Search, Menu, X, User, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     'Home',
@@ -19,6 +21,10 @@ const Header = () => {
     'Contact'
   ];
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
@@ -29,7 +35,12 @@ const Header = () => {
             <span>Time: 15:30 IST</span>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="text-sm text-blue-600 hover:text-blue-800">Login</button>
+            <button 
+              onClick={handleLoginClick}
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Login
+            </button>
             <button className="text-sm text-blue-600 hover:text-blue-800">Register</button>
             <Bell className="h-4 w-4 text-gray-500" />
           </div>
