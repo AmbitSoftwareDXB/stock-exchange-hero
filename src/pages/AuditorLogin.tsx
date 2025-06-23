@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Eye, EyeOff, Shield, User, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,6 +68,7 @@ const AuditorLogin = () => {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('auditorId', auditorId);
         localStorage.setItem('memberId', memberId);
+        localStorage.setItem('userRole', 'auditor'); // Add role identification
         navigate('/dashboard');
       } else {
         setErrors({ ...errors, general: 'Invalid auditor credentials. Please check your Auditor ID, Member ID, and Password.' });
@@ -84,6 +86,15 @@ const AuditorLogin = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Auditor Login</h1>
           <p className="text-gray-600">Stock Exchange Auditor Access</p>
+          <div className="mt-4 p-3 bg-orange-50 rounded-lg">
+            <p className="text-sm text-orange-800 font-medium">Auditor Portal Features:</p>
+            <ul className="text-xs text-orange-700 mt-1 space-y-1">
+              <li>• Member Portfolio Auditing</li>
+              <li>• Compliance Monitoring</li>
+              <li>• Risk Assessment Tools</li>
+              <li>• Audit Report Generation</li>
+            </ul>
+          </div>
         </CardHeader>
 
         <CardContent>
@@ -172,9 +183,23 @@ const AuditorLogin = () => {
               className="w-full bg-blue-600 hover:bg-blue-700" 
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Signing in...' : 'Sign In as Auditor'}
             </Button>
           </form>
+
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">Are you a member?</p>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/login')}
+                className="w-full"
+              >
+                <User className="mr-2 h-4 w-4" />
+                Switch to Member Login
+              </Button>
+            </div>
+          </div>
 
           <div className="mt-4 text-center">
             <a href="#" className="text-xs text-gray-500 hover:text-gray-700">

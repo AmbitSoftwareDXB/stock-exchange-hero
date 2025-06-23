@@ -9,17 +9,42 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Check user role
+  const isAuditor = localStorage.getItem('auditorId') !== null;
+  const isMember = localStorage.getItem('memberId') !== null && !isAuditor;
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
   const handleNavigation = (path: string) => {
     console.log(`Navigating to: ${path}`);
     navigate(path);
   };
 
-  const navItems = [
+  // Member navigation items
+  const memberNavItems = [
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Trading', path: '/trading' },
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'Research', path: '/research' },
+    { name: 'Market Data', path: '#' },
+    { name: 'Indices', path: '#' },
+    { name: 'IPOs', path: '#' }
+  ];
+
+  // Auditor navigation items
+  const auditorNavItems = [
+    { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Research', path: '/research' },
+    { name: 'Audit Reports', path: '#' },
+    { name: 'Compliance Review', path: '#' },
+    { name: 'Member Analytics', path: '#' },
+    { name: 'Risk Assessment', path: '#' }
+  ];
+
+  // Guest navigation items
+  const guestNavItems = [
+    { name: 'Home', path: '/' },
     { name: 'Market Data', path: '#' },
     { name: 'Indices', path: '#' },
     { name: 'IPOs', path: '#' },
@@ -30,12 +55,26 @@ const Header = () => {
     { name: 'Contact', path: '#' }
   ];
 
+  const getCurrentNavItems = () => {
+    if (isAuditor) return auditorNavItems;
+    if (isMember) return memberNavItems;
+    return guestNavItems;
+  };
+
   const handleLoginClick = () => {
     navigate('/login');
   };
 
   const handleAuditorLoginClick = () => {
     navigate('/auditor-login');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('memberId');
+    localStorage.removeItem('auditorId');
+    localStorage.removeItem('userId');
+    navigate('/');
   };
 
   const handleNavItemClick = (path: string) => {
@@ -53,20 +92,38 @@ const Header = () => {
           <div className="flex items-center space-x-4 text-sm text-gray-600">
             <span>Market Status: <span className="text-green-600 font-semibold">OPEN</span></span>
             <span>Time: 15:30 IST</span>
+            {isAuthenticated && (
+              <span className="text-blue-600 font-medium">
+                {isAuditor ? 'Auditor Mode' : 'Member Portal'}
+              </span>
+            )}
           </div>
           <div className="flex items-center space-x-4">
-            <button 
-              onClick={handleLoginClick}
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
-            >
-              Member Login
-            </button>
-            <button 
-              onClick={handleAuditorLoginClick}
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
-            >
-              Auditor Login
-            </button>
+            {!isAuthenticated ? (
+              <>
+                <button 
+                  onClick={handleLoginClick}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
+                >
+                  Member Login
+                </button>
+                <button 
+                  onClick={handleAuditorLoginClick}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
+                >
+                  Auditor Login
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={handleLogout}
+                  className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded-md hover:bg-red-50 transition-all duration-200"
+                >
+                  Logout
+                </button>
+              </>
+            )}
             <Bell className="h-4 w-4 text-gray-500" />
           </div>
         </div>
@@ -85,7 +142,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
-            {navItems.map((item) => (
+            {getCurrentNavItems().map((item) => (
               <button
                 key={item.name}
                 onClick={() => handleNavItemClick(item.path)}
@@ -102,7 +159,7 @@ const Header = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="text"
-                placeholder="Search stocks, news..."
+                placeholder={isAuditor ? "Search members, reports..." : "Search stocks, news..."}
                 className="pl-10 w-64"
               />
             </div>
@@ -122,7 +179,7 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-gray-200">
             <div className="flex flex-col space-y-3">
-              {navItems.map((item) => (
+              {getCurrentNavItems().map((item) => (
                 <button
                   key={item.name}
                   onClick={() => {
@@ -137,7 +194,7 @@ const Header = () => {
               <div className="pt-4">
                 <Input
                   type="text"
-                  placeholder="Search stocks, news..."
+                  placeholder={isAuditor ? "Search members, reports..." : "Search stocks, news..."}
                   className="w-full"
                 />
               </div>

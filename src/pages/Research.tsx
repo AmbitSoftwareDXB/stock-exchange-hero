@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { Search, Bell, User, Filter, TrendingUp, TrendingDown, Star, Download, RefreshCw, Eye } from 'lucide-react';
+import { Search, Bell, User, Filter, TrendingUp, TrendingDown, Star, Download, RefreshCw, Eye, Shield, FileCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -136,6 +135,11 @@ const Research = () => {
   const [selectedStock, setSelectedStock] = useState<typeof mockStocks[0] | null>(null);
   const [watchlist, setWatchlist] = useState<number[]>([]);
 
+  // Check user role
+  const isAuditor = localStorage.getItem('auditorId') !== null;
+  const isMember = localStorage.getItem('memberId') !== null && !isAuditor;
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
   console.log('Research page loaded');
 
   const sectors = ['all', 'Oil & Gas', 'Information Technology', 'Banking', 'FMCG', 'Telecommunications', 'Pharmaceuticals', 'Automobiles'];
@@ -169,6 +173,28 @@ const Research = () => {
     navigate(path);
   };
 
+  // Auditor-specific tabs
+  const getTabsList = () => {
+    if (isAuditor) {
+      return (
+        <TabsList className="grid w-full grid-cols-4 lg:w-[500px]">
+          <TabsTrigger value="directory">Stock Directory</TabsTrigger>
+          <TabsTrigger value="screener">Stock Screener</TabsTrigger>
+          <TabsTrigger value="compliance">Compliance Check</TabsTrigger>
+          <TabsTrigger value="reports">Audit Reports</TabsTrigger>
+        </TabsList>
+      );
+    }
+    
+    return (
+      <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+        <TabsTrigger value="directory">Stock Directory</TabsTrigger>
+        <TabsTrigger value="screener">Stock Screener</TabsTrigger>
+        <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
+      </TabsList>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - Same as Dashboard */}
@@ -190,30 +216,36 @@ const Research = () => {
                 >
                   Dashboard
                 </button>
-                <button 
-                  onClick={() => handleNavigation('/trading')} 
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Trading
-                </button>
-                <button 
-                  onClick={() => handleNavigation('/portfolio')} 
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Portfolio
-                </button>
+                {isMember && (
+                  <>
+                    <button 
+                      onClick={() => handleNavigation('/trading')} 
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      Trading
+                    </button>
+                    <button 
+                      onClick={() => handleNavigation('/portfolio')} 
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      Portfolio
+                    </button>
+                  </>
+                )}
                 <button 
                   onClick={() => handleNavigation('/research')} 
                   className="text-blue-600 font-medium"
                 >
                   Research
                 </button>
-                <button 
-                  onClick={() => console.log('News clicked')}
-                  className="text-gray-600 hover:text-gray-900"
-                >
-                  News
-                </button>
+                {isAuditor && (
+                  <button 
+                    onClick={() => console.log('Audit Reports clicked')}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    Audit Reports
+                  </button>
+                )}
               </nav>
             </div>
 
@@ -223,7 +255,7 @@ const Research = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   type="text"
-                  placeholder="Search..."
+                  placeholder={isAuditor ? "Search members, reports..." : "Search..."}
                   className="pl-10 w-64"
                 />
               </div>
@@ -241,16 +273,19 @@ const Research = () => {
       {/* Main Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Stock Research</h1>
-          <p className="text-gray-600 mt-2">Discover, analyze, and compare research insights on Indian stocks.</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {isAuditor ? 'Audit Research Center' : 'Stock Research'}
+          </h1>
+          <p className="text-gray-600 mt-2">
+            {isAuditor 
+              ? 'Access member portfolios, compliance reports, and risk assessments.' 
+              : 'Discover, analyze, and compare research insights on Indian stocks.'
+            }
+          </p>
         </div>
 
         <Tabs defaultValue="directory" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-            <TabsTrigger value="directory">Stock Directory</TabsTrigger>
-            <TabsTrigger value="screener">Stock Screener</TabsTrigger>
-            <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
-          </TabsList>
+          {getTabsList()}
 
           <TabsContent value="directory" className="space-y-6">
             <StockDirectory 
@@ -273,49 +308,158 @@ const Research = () => {
             <StockScreener stocks={mockStocks} />
           </TabsContent>
 
-          <TabsContent value="watchlist" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {mockStocks.filter(stock => watchlist.includes(stock.id)).map((stock) => (
-                <Card key={stock.id} className="hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() => handleStockSelect(stock)}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h3 className="font-semibold text-lg">{stock.symbol}</h3>
-                        <p className="text-sm text-gray-600">{stock.name}</p>
+          {/* Member-only Watchlist Tab */}
+          {!isAuditor && (
+            <TabsContent value="watchlist" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {mockStocks.filter(stock => watchlist.includes(stock.id)).map((stock) => (
+                  <Card key={stock.id} className="hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => handleStockSelect(stock)}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <h3 className="font-semibold text-lg">{stock.symbol}</h3>
+                          <p className="text-sm text-gray-600">{stock.name}</p>
+                        </div>
+                        <Badge variant={stock.rating === 'Buy' ? 'default' : stock.rating === 'Hold' ? 'secondary' : 'destructive'}>
+                          {stock.rating}
+                        </Badge>
                       </div>
-                      <Badge variant={stock.rating === 'Buy' ? 'default' : stock.rating === 'Hold' ? 'secondary' : 'destructive'}>
-                        {stock.rating}
-                      </Badge>
-                    </div>
-                    <div className="space-y-2">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">Price:</span>
+                          <span className="font-medium">₹{stock.price}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">Change:</span>
+                          <span className={`font-medium ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {stock.change >= 0 ? '+' : ''}₹{stock.change} ({stock.changePercent}%)
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">Target:</span>
+                          <span className="font-medium">₹{stock.targetPrice}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {watchlist.length === 0 && (
+                  <div className="col-span-3 text-center py-12 text-gray-500">
+                    <Star className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No stocks in your watchlist yet.</p>
+                    <p className="text-sm">Add stocks from the directory to track them here.</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Auditor-only Compliance Check Tab */}
+          {isAuditor && (
+            <TabsContent value="compliance" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-blue-600" />
+                      Member Compliance Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Price:</span>
-                        <span className="font-medium">₹{stock.price}</span>
+                        <span>Current Member ID:</span>
+                        <Badge variant="outline">MEM54321</Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Change:</span>
-                        <span className={`font-medium ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {stock.change >= 0 ? '+' : ''}₹{stock.change} ({stock.changePercent}%)
-                        </span>
+                        <span>Compliance Score:</span>
+                        <Badge variant="default">95%</Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Target:</span>
-                        <span className="font-medium">₹{stock.targetPrice}</span>
+                        <span>Risk Level:</span>
+                        <Badge variant="secondary">Medium</Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Last Audit:</span>
+                        <span className="text-sm text-gray-600">Jan 15, 2024</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-              {watchlist.length === 0 && (
-                <div className="col-span-3 text-center py-12 text-gray-500">
-                  <Star className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No stocks in your watchlist yet.</p>
-                  <p className="text-sm">Add stocks from the directory to track them here.</p>
-                </div>
-              )}
-            </div>
-          </TabsContent>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileCheck className="h-5 w-5 text-green-600" />
+                      Portfolio Risk Assessment
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between">
+                        <span>High-Risk Holdings:</span>
+                        <Badge variant="destructive">3</Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Concentration Risk:</span>
+                        <Badge variant="secondary">Low</Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Leverage Ratio:</span>
+                        <span className="font-medium">2.5x</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Margin Utilization:</span>
+                        <span className="font-medium">34%</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Auditor-only Reports Tab */}
+          {isAuditor && (
+            <TabsContent value="reports" className="space-y-6">
+              <div className="grid grid-cols-1 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Audit Reports</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {[
+                        { id: 1, member: 'MEM54321', date: '2024-01-15', status: 'Completed', risk: 'Medium' },
+                        { id: 2, member: 'MEM12345', date: '2024-01-12', status: 'In Progress', risk: 'Low' },
+                        { id: 3, member: 'MEM67890', date: '2024-01-10', status: 'Pending Review', risk: 'High' }
+                      ].map((report) => (
+                        <div key={report.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <h4 className="font-medium">Member: {report.member}</h4>
+                            <p className="text-sm text-gray-600">Date: {report.date}</p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <Badge variant={report.status === 'Completed' ? 'default' : 'secondary'}>
+                              {report.status}
+                            </Badge>
+                            <Badge variant={report.risk === 'High' ? 'destructive' : report.risk === 'Medium' ? 'secondary' : 'default'}>
+                              {report.risk} Risk
+                            </Badge>
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4 mr-2" />
+                              View
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
         </Tabs>
 
         {/* Research Details Panel */}

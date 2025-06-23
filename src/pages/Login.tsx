@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,6 +68,7 @@ const Login = () => {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('memberId', memberId);
         localStorage.setItem('userId', userId);
+        localStorage.setItem('userRole', 'member'); // Add role identification
         navigate('/dashboard');
       } else {
         setErrors({ ...errors, general: 'Invalid member credentials. Please check your Member ID, User ID, and Password.' });
@@ -84,6 +86,15 @@ const Login = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Member Login</h1>
           <p className="text-gray-600">Stock Exchange Member Access</p>
+          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium">Member Portal Features:</p>
+            <ul className="text-xs text-blue-700 mt-1 space-y-1">
+              <li>• Trading & Portfolio Management</li>
+              <li>• Real-time Market Data</li>
+              <li>• Research Tools & Analytics</li>
+              <li>• Compliance Tracking</li>
+            </ul>
+          </div>
         </CardHeader>
 
         <CardContent>
@@ -172,9 +183,23 @@ const Login = () => {
               className="w-full bg-blue-600 hover:bg-blue-700" 
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Signing in...' : 'Sign In as Member'}
             </Button>
           </form>
+
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">Are you an auditor?</p>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/auditor-login')}
+                className="w-full"
+              >
+                <Shield className="mr-2 h-4 w-4" />
+                Switch to Auditor Login
+              </Button>
+            </div>
+          </div>
 
           <div className="mt-4 text-center">
             <a href="#" className="text-xs text-gray-500 hover:text-gray-700">
