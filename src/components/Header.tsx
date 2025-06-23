@@ -41,13 +41,13 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <button 
               onClick={handleLoginClick}
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
             >
               Member Login
             </button>
             <button 
               onClick={handleAuditorLoginClick}
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-md hover:bg-blue-50 transition-all duration-200"
             >
               Auditor Login
             </button>
