@@ -25,6 +25,10 @@ const Header = () => {
     navigate('/login');
   };
 
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
@@ -41,7 +45,12 @@ const Header = () => {
             >
               Login
             </button>
-            <button className="text-sm text-blue-600 hover:text-blue-800">Register</button>
+            <button 
+              onClick={handleRegisterClick}
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
+              Register
+            </button>
             <Bell className="h-4 w-4 text-gray-500" />
           </div>
         </div>
