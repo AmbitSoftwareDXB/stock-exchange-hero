@@ -28,25 +28,25 @@ interface ResearchDetailsPanelProps {
   onClose: () => void;
 }
 
-// Mock data for charts
+// Mock data for charts with Indian context
 const priceData = [
-  { date: '2024-01-01', price: 165.00 },
-  { date: '2024-01-08', price: 168.50 },
-  { date: '2024-01-15', price: 172.25 },
-  { date: '2024-01-22', price: 175.43 },
+  { date: '2024-01-01', price: 2325.00 },
+  { date: '2024-01-08', price: 2398.50 },
+  { date: '2024-01-15', price: 2452.25 },
+  { date: '2024-01-22', price: 2485.30 },
 ];
 
 const analystRatings = [
-  { rating: 'Buy', count: 15 },
+  { rating: 'Buy', count: 18 },
   { rating: 'Hold', count: 8 },
   { rating: 'Sell', count: 2 },
 ];
 
 const financialData = [
-  { metric: 'Revenue', value: '394.3B', change: 8.2 },
-  { metric: 'Net Income', value: '97.0B', change: 5.4 },
-  { metric: 'EPS', value: '6.16', change: 7.8 },
-  { metric: 'P/E Ratio', value: '28.5', change: -2.1 },
+  { metric: 'Revenue', value: '7.31L Cr', change: 12.5 },
+  { metric: 'Net Income', value: '68,200 Cr', change: 8.4 },
+  { metric: 'EPS', value: '101.2', change: 9.8 },
+  { metric: 'P/E Ratio', value: '24.6', change: -1.8 },
 ];
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b'];
@@ -137,12 +137,12 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
                   <Card>
                     <CardContent className="p-6">
                       <div className="text-center">
-                        <div className="text-3xl font-bold">${stock.price}</div>
+                        <div className="text-3xl font-bold">₹{stock.price.toLocaleString('en-IN')}</div>
                         <div className={`flex items-center justify-center gap-1 mt-2 ${
                           stock.change >= 0 ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {stock.change >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                          {stock.change >= 0 ? '+' : ''}{stock.change} ({stock.changePercent}%)
+                          {stock.change >= 0 ? '+' : ''}₹{stock.change} ({stock.changePercent}%)
                         </div>
                       </div>
                     </CardContent>
@@ -156,7 +156,7 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Target Price</span>
-                        <span className="font-medium">${stock.targetPrice}</span>
+                        <span className="font-medium">₹{stock.targetPrice.toLocaleString('en-IN')}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Upside</span>
@@ -210,22 +210,22 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
-                        <p className="font-medium">Goldman Sachs</p>
-                        <p className="text-sm text-gray-600">Price Target: $190</p>
+                        <p className="font-medium">ICICI Securities</p>
+                        <p className="text-sm text-gray-600">Price Target: ₹{(stock.targetPrice + 50).toLocaleString('en-IN')}</p>
                       </div>
                       <Badge>Buy</Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
-                        <p className="font-medium">Morgan Stanley</p>
-                        <p className="text-sm text-gray-600">Price Target: $185</p>
+                        <p className="font-medium">Kotak Securities</p>
+                        <p className="text-sm text-gray-600">Price Target: ₹{(stock.targetPrice - 25).toLocaleString('en-IN')}</p>
                       </div>
                       <Badge variant="secondary">Hold</Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
-                        <p className="font-medium">JPMorgan</p>
-                        <p className="text-sm text-gray-600">Price Target: $195</p>
+                        <p className="font-medium">Motilal Oswal</p>
+                        <p className="text-sm text-gray-600">Price Target: ₹{(stock.targetPrice + 75).toLocaleString('en-IN')}</p>
                       </div>
                       <Badge>Buy</Badge>
                     </div>
@@ -257,16 +257,16 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Revenue Trends</CardTitle>
+                    <CardTitle>Revenue Trends (₹ Cr)</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ChartContainer config={{}} className="h-[300px]">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[
-                          { quarter: 'Q1', revenue: 89.6 },
-                          { quarter: 'Q2', revenue: 81.4 },
-                          { quarter: 'Q3', revenue: 89.5 },
-                          { quarter: 'Q4', revenue: 117.2 },
+                          { quarter: 'Q1', revenue: 156800 },
+                          { quarter: 'Q2', revenue: 174500 },
+                          { quarter: 'Q3', revenue: 182600 },
+                          { quarter: 'Q4', revenue: 196400 },
                         ]}>
                           <XAxis dataKey="quarter" />
                           <YAxis />
@@ -289,14 +289,14 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
                   <p className="text-gray-700">
                     {stock.name} continues to demonstrate strong fundamentals with consistent revenue growth 
                     and market leadership in the {stock.sector.toLowerCase()} sector. The company's strategic 
-                    initiatives and innovation pipeline position it well for future growth.
+                    initiatives and innovation pipeline position it well for future growth in the Indian market.
                   </p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-semibold text-green-600 mb-2">Strengths</h4>
                       <ul className="space-y-1 text-sm text-gray-700">
-                        <li>• Strong market position</li>
+                        <li>• Strong market position in India</li>
                         <li>• Consistent profitability</li>
                         <li>• Innovation leadership</li>
                         <li>• Strong balance sheet</li>
@@ -321,19 +321,19 @@ const ResearchDetailsPanel: React.FC<ResearchDetailsPanelProps> = ({ stock, onCl
                 {[
                   {
                     title: `${stock.name} Reports Strong Q4 Earnings`,
-                    source: 'Financial Times',
+                    source: 'Economic Times',
                     time: '2 hours ago',
                     excerpt: 'Company beats analyst expectations with strong revenue growth...'
                   },
                   {
                     title: 'Analyst Upgrades Rating to Buy',
-                    source: 'Reuters',
+                    source: 'Business Standard',
                     time: '1 day ago',
-                    excerpt: 'Goldman Sachs raises price target citing strong fundamentals...'
+                    excerpt: 'ICICI Securities raises price target citing strong fundamentals...'
                   },
                   {
                     title: 'New Product Launch Announcement',
-                    source: 'Bloomberg',
+                    source: 'Mint',
                     time: '3 days ago',
                     excerpt: 'Company unveils innovative product line targeting new markets...'
                   }

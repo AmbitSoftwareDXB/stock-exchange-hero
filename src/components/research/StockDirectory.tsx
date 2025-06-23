@@ -71,7 +71,7 @@ const StockDirectory: React.FC<StockDirectoryProps> = ({
             </div>
             <div className="flex gap-4">
               <Select value={selectedSector} onValueChange={setSelectedSector}>
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Sector" />
                 </SelectTrigger>
                 <SelectContent>
@@ -133,12 +133,12 @@ const StockDirectory: React.FC<StockDirectoryProps> = ({
 
               <div className="space-y-3" onClick={() => onStockSelect(stock)}>
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold">${stock.price}</span>
+                  <span className="text-2xl font-bold">₹{stock.price.toLocaleString('en-IN')}</span>
                   <div className={`flex items-center gap-1 text-sm font-medium ${
                     stock.change >= 0 ? 'text-green-600' : 'text-red-600'
                   }`}>
                     {stock.change >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                    {stock.change >= 0 ? '+' : ''}{stock.change} ({stock.changePercent}%)
+                    {stock.change >= 0 ? '+' : ''}₹{stock.change} ({stock.changePercent}%)
                   </div>
                 </div>
 
@@ -149,7 +149,7 @@ const StockDirectory: React.FC<StockDirectoryProps> = ({
                   </div>
                   <div>
                     <span className="text-gray-600">Target Price:</span>
-                    <p className="font-medium">${stock.targetPrice}</p>
+                    <p className="font-medium">₹{stock.targetPrice.toLocaleString('en-IN')}</p>
                   </div>
                 </div>
 

@@ -30,7 +30,7 @@ interface StockScreenerProps {
 const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
   const [filters, setFilters] = useState({
     minPrice: [0],
-    maxPrice: [1000],
+    maxPrice: [5000],
     minMarketCap: '',
     maxMarketCap: '',
     sector: 'all',
@@ -40,9 +40,10 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
 
   const [savedScreens] = useState([
     'Large Cap Growth',
+    'Banking Stocks',
+    'IT Sector Leaders',
     'Dividend Stocks',
-    'High Beta Tech',
-    'Value Picks'
+    'High Beta Tech'
   ]);
 
   const handleFilterChange = (key: string, value: any) => {
@@ -52,7 +53,7 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
   const resetFilters = () => {
     setFilters({
       minPrice: [0],
-      maxPrice: [1000],
+      maxPrice: [5000],
       minMarketCap: '',
       maxMarketCap: '',
       sector: 'all',
@@ -99,25 +100,25 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
 
               {/* Price Range */}
               <div>
-                <Label className="text-sm font-medium">Price Range</Label>
+                <Label className="text-sm font-medium">Price Range (₹)</Label>
                 <div className="space-y-3 mt-2">
                   <div>
-                    <Label className="text-xs text-gray-600">Min Price: ${filters.minPrice[0]}</Label>
+                    <Label className="text-xs text-gray-600">Min Price: ₹{filters.minPrice[0]}</Label>
                     <Slider
                       value={filters.minPrice}
                       onValueChange={(value) => handleFilterChange('minPrice', value)}
-                      max={500}
-                      step={5}
+                      max={2500}
+                      step={50}
                       className="mt-1"
                     />
                   </div>
                   <div>
-                    <Label className="text-xs text-gray-600">Max Price: ${filters.maxPrice[0]}</Label>
+                    <Label className="text-xs text-gray-600">Max Price: ₹{filters.maxPrice[0]}</Label>
                     <Slider
                       value={filters.maxPrice}
                       onValueChange={(value) => handleFilterChange('maxPrice', value)}
-                      max={1000}
-                      step={10}
+                      max={5000}
+                      step={100}
                       className="mt-1"
                     />
                   </div>
@@ -126,15 +127,15 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
 
               {/* Market Cap */}
               <div>
-                <Label className="text-sm font-medium">Market Cap</Label>
+                <Label className="text-sm font-medium">Market Cap (₹ Cr)</Label>
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   <Input
-                    placeholder="Min (B)"
+                    placeholder="Min (Cr)"
                     value={filters.minMarketCap}
                     onChange={(e) => handleFilterChange('minMarketCap', e.target.value)}
                   />
                   <Input
-                    placeholder="Max (B)"
+                    placeholder="Max (Cr)"
                     value={filters.maxMarketCap}
                     onChange={(e) => handleFilterChange('maxMarketCap', e.target.value)}
                   />
@@ -150,11 +151,13 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Sectors</SelectItem>
-                    <SelectItem value="Technology">Technology</SelectItem>
-                    <SelectItem value="Healthcare">Healthcare</SelectItem>
-                    <SelectItem value="Financial">Financial</SelectItem>
-                    <SelectItem value="Automotive">Automotive</SelectItem>
-                    <SelectItem value="Energy">Energy</SelectItem>
+                    <SelectItem value="Oil & Gas">Oil & Gas</SelectItem>
+                    <SelectItem value="Information Technology">Information Technology</SelectItem>
+                    <SelectItem value="Banking">Banking</SelectItem>
+                    <SelectItem value="FMCG">FMCG</SelectItem>
+                    <SelectItem value="Telecommunications">Telecommunications</SelectItem>
+                    <SelectItem value="Pharmaceuticals">Pharmaceuticals</SelectItem>
+                    <SelectItem value="Automobiles">Automobiles</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -213,7 +216,7 @@ const StockScreener: React.FC<StockScreenerProps> = ({ stocks }) => {
                         <p className="text-sm text-gray-600">{stock.name}</p>
                       </div>
                       <div className="text-sm">
-                        <p className="font-medium">${stock.price}</p>
+                        <p className="font-medium">₹{stock.price.toLocaleString('en-IN')}</p>
                         <p className={stock.change >= 0 ? 'text-green-600' : 'text-red-600'}>
                           {stock.change >= 0 ? '+' : ''}{stock.changePercent}%
                         </p>

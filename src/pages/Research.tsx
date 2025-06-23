@@ -12,77 +12,119 @@ import StockDirectory from '@/components/research/StockDirectory';
 import ResearchDetailsPanel from '@/components/research/ResearchDetailsPanel';
 import StockScreener from '@/components/research/StockScreener';
 
-// Mock research data
+// Mock Indian research data
 const mockStocks = [
   {
     id: 1,
-    symbol: 'AAPL',
-    name: 'Apple Inc.',
-    sector: 'Technology',
-    price: 175.43,
-    change: 2.15,
-    changePercent: 1.24,
-    marketCap: '2.8T',
+    symbol: 'RELIANCE',
+    name: 'Reliance Industries Limited',
+    sector: 'Oil & Gas',
+    price: 2485.30,
+    change: 45.20,
+    changePercent: 1.85,
+    marketCap: '16.8L Cr',
     rating: 'Buy',
-    targetPrice: 190.00,
-    analystCount: 25,
+    targetPrice: 2750.00,
+    analystCount: 28,
     lastReport: '2024-01-15'
   },
   {
     id: 2,
-    symbol: 'MSFT',
-    name: 'Microsoft Corporation',
-    sector: 'Technology',
-    price: 378.85,
-    change: -5.20,
-    changePercent: -1.35,
-    marketCap: '2.9T',
+    symbol: 'TCS',
+    name: 'Tata Consultancy Services Limited',
+    sector: 'Information Technology',
+    price: 3542.75,
+    change: -62.40,
+    changePercent: -1.73,
+    marketCap: '12.9L Cr',
     rating: 'Buy',
-    targetPrice: 425.00,
-    analystCount: 30,
+    targetPrice: 3800.00,
+    analystCount: 32,
     lastReport: '2024-01-12'
   },
   {
     id: 3,
-    symbol: 'GOOGL',
-    name: 'Alphabet Inc.',
-    sector: 'Technology',
-    price: 142.56,
-    change: 1.87,
-    changePercent: 1.33,
-    marketCap: '1.8T',
+    symbol: 'HDFCBANK',
+    name: 'HDFC Bank Limited',
+    sector: 'Banking',
+    price: 1543.85,
+    change: 28.65,
+    changePercent: 1.89,
+    marketCap: '11.8L Cr',
     rating: 'Hold',
-    targetPrice: 155.00,
-    analystCount: 28,
+    targetPrice: 1650.00,
+    analystCount: 30,
     lastReport: '2024-01-10'
   },
   {
     id: 4,
-    symbol: 'TSLA',
-    name: 'Tesla, Inc.',
-    sector: 'Automotive',
-    price: 248.42,
-    change: 12.35,
-    changePercent: 5.23,
-    marketCap: '790B',
+    symbol: 'INFY',
+    name: 'Infosys Limited',
+    sector: 'Information Technology',
+    price: 1387.40,
+    change: 75.30,
+    changePercent: 5.74,
+    marketCap: '5.8L Cr',
     rating: 'Hold',
-    targetPrice: 275.00,
-    analystCount: 22,
+    targetPrice: 1500.00,
+    analystCount: 25,
     lastReport: '2024-01-08'
   },
   {
     id: 5,
-    symbol: 'NVDA',
-    name: 'NVIDIA Corporation',
-    sector: 'Technology',
-    price: 722.48,
-    change: -15.67,
-    changePercent: -2.12,
-    marketCap: '1.8T',
+    symbol: 'ICICIBANK',
+    name: 'ICICI Bank Limited',
+    sector: 'Banking',
+    price: 1098.25,
+    change: -18.75,
+    changePercent: -1.68,
+    marketCap: '7.7L Cr',
     rating: 'Buy',
-    targetPrice: 800.00,
-    analystCount: 35,
+    targetPrice: 1200.00,
+    analystCount: 27,
     lastReport: '2024-01-14'
+  },
+  {
+    id: 6,
+    symbol: 'HINDUNILVR',
+    name: 'Hindustan Unilever Limited',
+    sector: 'FMCG',
+    price: 2678.90,
+    change: 34.50,
+    changePercent: 1.30,
+    marketCap: '6.3L Cr',
+    rating: 'Buy',
+    targetPrice: 2850.00,
+    analystCount: 22,
+    lastReport: '2024-01-13'
+  },
+  {
+    id: 7,
+    symbol: 'ITC',
+    name: 'ITC Limited',
+    sector: 'FMCG',
+    price: 456.20,
+    change: 12.80,
+    changePercent: 2.89,
+    marketCap: '5.7L Cr',
+    rating: 'Hold',
+    targetPrice: 480.00,
+    analystCount: 20,
+    lastReport: '2024-01-11'
+  },
+  {
+    id: 8,
+    symbol: 'BHARTIARTL',
+    name: 'Bharti Airtel Limited',
+    sector: 'Telecommunications',
+    price: 1198.35,
+    change: -15.25,
+    changePercent: -1.26,
+    marketCap: '6.8L Cr',
+    rating: 'Buy',
+    targetPrice: 1300.00,
+    analystCount: 24,
+    lastReport: '2024-01-09'
   }
 ];
 
@@ -96,7 +138,7 @@ const Research = () => {
 
   console.log('Research page loaded');
 
-  const sectors = ['all', 'Technology', 'Healthcare', 'Financial', 'Automotive', 'Energy'];
+  const sectors = ['all', 'Oil & Gas', 'Information Technology', 'Banking', 'FMCG', 'Telecommunications', 'Pharmaceuticals', 'Automobiles'];
   const ratings = ['all', 'Buy', 'Hold', 'Sell'];
 
   const filteredStocks = useMemo(() => {
@@ -192,7 +234,7 @@ const Research = () => {
       <main className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Stock Research</h1>
-          <p className="text-gray-600 mt-2">Discover, analyze, and compare research insights on stocks.</p>
+          <p className="text-gray-600 mt-2">Discover, analyze, and compare research insights on Indian stocks.</p>
         </div>
 
         <Tabs defaultValue="directory" className="space-y-6">
@@ -241,17 +283,17 @@ const Research = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Price:</span>
-                        <span className="font-medium">${stock.price}</span>
+                        <span className="font-medium">₹{stock.price}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Change:</span>
                         <span className={`font-medium ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {stock.change >= 0 ? '+' : ''}{stock.change} ({stock.changePercent}%)
+                          {stock.change >= 0 ? '+' : ''}₹{stock.change} ({stock.changePercent}%)
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Target:</span>
-                        <span className="font-medium">${stock.targetPrice}</span>
+                        <span className="font-medium">₹{stock.targetPrice}</span>
                       </div>
                     </div>
                   </CardContent>
