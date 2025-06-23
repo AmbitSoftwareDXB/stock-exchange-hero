@@ -1,12 +1,14 @@
-
 import React from 'react';
 import { Search, Bell, User, TrendingUp, TrendingDown, Download, Eye, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   const complianceData = {
     deadlines: { value: 3, trend: '+10%', isPositive: false },
     status: { value: 'In Progress', trend: '2 pending', isPositive: false },
@@ -87,7 +89,12 @@ const Dashboard = () => {
               </div>
               <nav className="hidden md:flex items-center space-x-6">
                 <a href="/dashboard" className="text-blue-600 font-medium">Dashboard</a>
-                <a href="#" className="text-gray-600 hover:text-gray-900">Trading</a>
+                <button 
+                  onClick={() => navigate('/trading')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Trading
+                </button>
                 <a href="#" className="text-gray-600 hover:text-gray-900">Portfolio</a>
                 <a href="#" className="text-gray-600 hover:text-gray-900">Research</a>
                 <a href="#" className="text-gray-600 hover:text-gray-900">News</a>

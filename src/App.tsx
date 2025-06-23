@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import AuditorLogin from "./pages/AuditorLogin";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Trading from "./pages/Trading";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/auditor-login" element={<AuditorLogin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/trading" element={<Trading />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
