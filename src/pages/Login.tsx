@@ -16,6 +16,11 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Hardcoded credentials for testing
+  const HARDCODED_MEMBER_ID = 'MEM12345';
+  const HARDCODED_USER_ID = 'USER001';
+  const HARDCODED_PASSWORD = 'Password123';
+
   const validateForm = () => {
     const newErrors = { memberId: '', userId: '', password: '', general: '' };
     
@@ -57,10 +62,9 @@ const Login = () => {
     
     setIsLoading(true);
     
-    // Simulate authentication
+    // Simulate authentication with hardcoded credentials
     setTimeout(() => {
-      // Simulate successful login for demo
-      if (memberId && userId && password) {
+      if (memberId === HARDCODED_MEMBER_ID && userId === HARDCODED_USER_ID && password === HARDCODED_PASSWORD) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('memberId', memberId);
         localStorage.setItem('userId', userId);
@@ -81,6 +85,14 @@ const Login = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Member Login</h1>
           <p className="text-gray-600">Stock Exchange Member Access</p>
+          
+          {/* Test credentials display */}
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-left">
+            <p className="text-xs font-semibold text-yellow-800 mb-2">Test Credentials:</p>
+            <p className="text-xs text-yellow-700">Member ID: {HARDCODED_MEMBER_ID}</p>
+            <p className="text-xs text-yellow-700">User ID: {HARDCODED_USER_ID}</p>
+            <p className="text-xs text-yellow-700">Password: {HARDCODED_PASSWORD}</p>
+          </div>
         </CardHeader>
 
         <CardContent>
