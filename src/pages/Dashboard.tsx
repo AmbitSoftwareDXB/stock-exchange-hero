@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search, Bell, User, TrendingUp, TrendingDown, Download, Eye, AlertTriangle, FileCheck, Users, Shield, Activity } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,32 +22,35 @@ const Dashboard = () => {
     navigate(path);
   };
 
-  // Member Dashboard Data
+  // Member Dashboard Data - focused on member activities
   const memberData = {
+    trading: {
+      portfolioValue: { value: '₹8,45,000', trend: '+2.5%', isPositive: true },
+      daysPnL: { value: '₹12,500', trend: '+1.8%', isPositive: true },
+      totalPnL: { value: '₹1,25,000', trend: '+15%', isPositive: true },
+      activePositions: { value: 15, trend: '+3', isPositive: true }
+    },
     compliance: {
-      deadlines: { value: 3, trend: '+10%', isPositive: false },
-      status: { value: 'In Progress', trend: '2 pending', isPositive: false },
-      alerts: { value: 5, trend: '+2', isPositive: false },
-      penalties: { value: 0, trend: '0%', isPositive: true }
+      complianceScore: { value: '95%', trend: '+2%', isPositive: true },
+      pendingActions: { value: 2, trend: '-1', isPositive: true },
+      documentsStatus: { value: 'Up to Date', trend: 'Last updated: 3 days ago', isPositive: true },
+      riskLevel: { value: 'Low', trend: 'Stable', isPositive: true }
     },
     financial: {
-      actualVsApplicable: { actual: '₹500,000', applicable: '₹400,000', trend: '+5%', isPositive: true },
-      shortfall: { value: '₹0', trend: 'No change', isPositive: true },
-      autoCalculated: { value: '₹100,000', trend: '+12%', isPositive: true }
+      availableMargin: { value: '₹2,50,000', trend: '+5%', isPositive: true },
+      usedMargin: { value: '₹85,000', trend: '+12%', isPositive: false },
+      exposure: { value: '₹3,35,000', trend: '+8%', isPositive: false },
+      cashBalance: { value: '₹1,65,000', trend: 'No change', isPositive: true }
     },
-    document: {
-      recentSubmissions: { value: 8, trend: '+3', isPositive: true },
-      auditStatus: { value: 'Completed', trend: 'Last: 15 days ago', isPositive: true },
-      atrTracker: { value: 12, trend: '+2', isPositive: true }
-    },
-    communication: {
-      notifications: { value: 4, trend: '+1', isPositive: false },
-      queryPanel: { value: 'Open', trend: '3 active', isPositive: false },
-      emailHistory: { value: 23, trend: '+5', isPositive: true }
+    recent: {
+      lastTrade: { value: 'RELIANCE', trend: 'Bought at ₹2,450', isPositive: true },
+      watchlistAlerts: { value: 3, trend: '+1', isPositive: false },
+      ordersPending: { value: 1, trend: 'No change', isPositive: true },
+      dividendReceived: { value: '₹5,200', trend: 'This month', isPositive: true }
     }
   };
 
-  // Auditor Dashboard Data
+  // Auditor Dashboard Data - focused on audit activities
   const auditorData = {
     audit: {
       activeMember: { value: 'MEM54321', trend: 'Current audit', isPositive: true },
@@ -119,168 +121,197 @@ const Dashboard = () => {
 
   const renderMemberDashboard = () => (
     <div className="space-y-8">
-      {/* Compliance & Submission */}
+      {/* Trading Overview */}
       <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Compliance & Submission</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Trading Overview</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <MetricCard
-            title="Deadlines"
-            value={memberData.compliance.deadlines.value}
-            trend={memberData.compliance.deadlines.trend}
-            isPositive={memberData.compliance.deadlines.isPositive}
+            title="Portfolio Value"
+            value={memberData.trading.portfolioValue.value}
+            trend={memberData.trading.portfolioValue.trend}
+            isPositive={memberData.trading.portfolioValue.isPositive}
+          />
+          <MetricCard
+            title="Day's P&L"
+            value={memberData.trading.daysPnL.value}
+            trend={memberData.trading.daysPnL.trend}
+            isPositive={memberData.trading.daysPnL.isPositive}
+          />
+          <MetricCard
+            title="Total P&L"
+            value={memberData.trading.totalPnL.value}
+            trend={memberData.trading.totalPnL.trend}
+            isPositive={memberData.trading.totalPnL.isPositive}
+          />
+          <MetricCard
+            title="Active Positions"
+            value={memberData.trading.activePositions.value}
+            trend={memberData.trading.activePositions.trend}
+            isPositive={memberData.trading.activePositions.isPositive}
+          />
+        </div>
+      </section>
+
+      {/* Compliance Status */}
+      <section>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Compliance Status</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard
+            title="Compliance Score"
+            value={memberData.compliance.complianceScore.value}
+            trend={memberData.compliance.complianceScore.trend}
+            isPositive={memberData.compliance.complianceScore.isPositive}
+            icon={<Shield className="h-5 w-5 text-green-500" />}
+          />
+          <MetricCard
+            title="Pending Actions"
+            value={memberData.compliance.pendingActions.value}
+            trend={memberData.compliance.pendingActions.trend}
+            isPositive={memberData.compliance.pendingActions.isPositive}
             icon={<AlertTriangle className="h-5 w-5 text-orange-500" />}
           />
-          <MetricCard
-            title="Status Tracker"
-            value={memberData.compliance.status.value}
-            trend={memberData.compliance.status.trend}
-            isPositive={memberData.compliance.status.isPositive}
-          />
-          <MetricCard
-            title="Alerts"
-            value={memberData.compliance.alerts.value}
-            trend={memberData.compliance.alerts.trend}
-            isPositive={memberData.compliance.alerts.isPositive}
-            icon={<Bell className="h-5 w-5 text-red-500" />}
-          />
-          <MetricCard
-            title="Penalties"
-            value={memberData.compliance.penalties.value}
-            trend={memberData.compliance.penalties.trend}
-            isPositive={memberData.compliance.penalties.isPositive}
-          />
-        </div>
-      </section>
-
-      {/* Network & Financial Overview */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Network & Financial Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
-              <h3 className="text-sm font-medium text-gray-600 mb-2">Actual vs. Applicable</h3>
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-lg font-bold text-gray-900">
-                  {memberData.financial.actualVsApplicable.actual}
-                </div>
-                <div className="text-lg font-bold text-gray-600">
-                  / {memberData.financial.actualVsApplicable.applicable}
-                </div>
-              </div>
-              <div className="flex items-center space-x-1 text-sm text-green-600">
-                <TrendingUp className="h-4 w-4" />
-                <span>{memberData.financial.actualVsApplicable.trend}</span>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <MetricCard
-            title="Shortfall"
-            value={memberData.financial.shortfall.value}
-            trend={memberData.financial.shortfall.trend}
-            isPositive={memberData.financial.shortfall.isPositive}
-          />
-          
-          <MetricCard
-            title="Auto-Calculated Values"
-            value={memberData.financial.autoCalculated.value}
-            trend={memberData.financial.autoCalculated.trend}
-            isPositive={memberData.financial.autoCalculated.isPositive}
-          />
-        </div>
-      </section>
-
-      {/* Document & Audit */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Document & Audit</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <MetricCard
-            title="Recent Submissions"
-            value={memberData.document.recentSubmissions.value}
-            trend={memberData.document.recentSubmissions.trend}
-            isPositive={memberData.document.recentSubmissions.isPositive}
-          />
-          
-          <Card className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <h3 className="text-sm font-medium text-gray-600 mb-2">Audit Status</h3>
+              <h3 className="text-sm font-medium text-gray-600 mb-2">Documents Status</h3>
               <div className="flex items-center justify-between mb-2">
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                  {memberData.document.auditStatus.value}
+                  {memberData.compliance.documentsStatus.value}
                 </Badge>
               </div>
               <div className="text-sm text-gray-600">
-                {memberData.document.auditStatus.trend}
+                {memberData.compliance.documentsStatus.trend}
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <h3 className="text-sm font-medium text-gray-600 mb-2">Risk Level</h3>
+              <div className="flex items-center justify-between mb-2">
+                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                  {memberData.compliance.riskLevel.value}
+                </Badge>
+              </div>
+              <div className="text-sm text-gray-600">
+                {memberData.compliance.riskLevel.trend}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Financial Summary */}
+      <section>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Financial Summary</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard
+            title="Available Margin"
+            value={memberData.financial.availableMargin.value}
+            trend={memberData.financial.availableMargin.trend}
+            isPositive={memberData.financial.availableMargin.isPositive}
+          />
+          <MetricCard
+            title="Used Margin"
+            value={memberData.financial.usedMargin.value}
+            trend={memberData.financial.usedMargin.trend}
+            isPositive={memberData.financial.usedMargin.isPositive}
+          />
+          <MetricCard
+            title="Total Exposure"
+            value={memberData.financial.exposure.value}
+            trend={memberData.financial.exposure.trend}
+            isPositive={memberData.financial.exposure.isPositive}
+          />
+          <MetricCard
+            title="Cash Balance"
+            value={memberData.financial.cashBalance.value}
+            trend={memberData.financial.cashBalance.trend}
+            isPositive={memberData.financial.cashBalance.isPositive}
+          />
+        </div>
+      </section>
+
+      {/* Recent Activity */}
+      <section>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <h3 className="text-sm font-medium text-gray-600 mb-2">Last Trade</h3>
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-lg font-bold text-gray-900">
+                  {memberData.recent.lastTrade.value}
+                </div>
+              </div>
+              <div className="text-sm text-green-600">
+                {memberData.recent.lastTrade.trend}
               </div>
             </CardContent>
           </Card>
           
           <MetricCard
-            title="ATR Tracker"
-            value={memberData.document.atrTracker.value}
-            trend={memberData.document.atrTracker.trend}
-            isPositive={memberData.document.atrTracker.isPositive}
-          />
-        </div>
-      </section>
-
-      {/* Communication & Interaction */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Communication & Interaction</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <MetricCard
-            title="Notifications"
-            value={memberData.communication.notifications.value}
-            trend={memberData.communication.notifications.trend}
-            isPositive={memberData.communication.notifications.isPositive}
+            title="Watchlist Alerts"
+            value={memberData.recent.watchlistAlerts.value}
+            trend={memberData.recent.watchlistAlerts.trend}
+            isPositive={memberData.recent.watchlistAlerts.isPositive}
             icon={<Bell className="h-5 w-5 text-blue-500" />}
           />
           
+          <MetricCard
+            title="Orders Pending"
+            value={memberData.recent.ordersPending.value}
+            trend={memberData.recent.ordersPending.trend}
+            isPositive={memberData.recent.ordersPending.isPositive}
+          />
+          
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
-              <h3 className="text-sm font-medium text-gray-600 mb-2">Query Panel</h3>
+              <h3 className="text-sm font-medium text-gray-600 mb-2">Dividend Received</h3>
               <div className="flex items-center justify-between mb-2">
-                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                  {memberData.communication.queryPanel.value}
-                </Badge>
+                <div className="text-lg font-bold text-gray-900">
+                  {memberData.recent.dividendReceived.value}
+                </div>
               </div>
               <div className="text-sm text-gray-600">
-                {memberData.communication.queryPanel.trend}
+                {memberData.recent.dividendReceived.trend}
               </div>
             </CardContent>
           </Card>
-          
-          <MetricCard
-            title="Email History"
-            value={memberData.communication.emailHistory.value}
-            trend={memberData.communication.emailHistory.trend}
-            isPositive={memberData.communication.emailHistory.isPositive}
-          />
         </div>
       </section>
 
-      {/* Analytics & Logs */}
+      {/* Quick Actions */}
       <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Analytics & Logs</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Activity Log</h3>
-              <p className="text-gray-600 mb-4">View detailed activity logs and user interactions</p>
-              <Button className="w-full" variant="outline">
-                <Eye className="mr-2 h-4 w-4" />
-                View
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Start Trading</h3>
+              <p className="text-gray-600 mb-4">Access trading platform and place orders</p>
+              <Button className="w-full" onClick={() => handleNavigation('/trading')}>
+                <Activity className="mr-2 h-4 w-4" />
+                Trade Now
               </Button>
             </CardContent>
           </Card>
           
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Summary Report</h3>
-              <p className="text-gray-600 mb-4">Download comprehensive summary reports</p>
-              <Button className="w-full" variant="outline">
-                <Download className="mr-2 h-4 w-4" />
-                Download
+              <h3 className="text-lg font-medium text-gray-900 mb-4">View Portfolio</h3>
+              <p className="text-gray-600 mb-4">Check your holdings and performance</p>
+              <Button className="w-full" variant="outline" onClick={() => handleNavigation('/portfolio')}>
+                <Eye className="mr-2 h-4 w-4" />
+                View Portfolio
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Research Tools</h3>
+              <p className="text-gray-600 mb-4">Access market research and analysis</p>
+              <Button className="w-full" variant="outline" onClick={() => handleNavigation('/research')}>
+                <FileCheck className="mr-2 h-4 w-4" />
+                Research
               </Button>
             </CardContent>
           </Card>
@@ -540,7 +571,7 @@ const Dashboard = () => {
           <p className="text-gray-600 mt-2">
             {isAuditor 
               ? 'Welcome back! Here\'s your audit progress and member compliance overview.' 
-              : 'Welcome back! Here\'s your compliance and financial overview.'
+              : 'Welcome back! Here\'s your trading and portfolio overview.'
             }
           </p>
         </div>
