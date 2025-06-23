@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { ArrowUpDown, Download, Filter, Search, RefreshCw, MoreHorizontal, TrendingUp, TrendingDown, Eye } from 'lucide-react';
+import { ArrowUpDown, Download, Filter, Search, RefreshCw, MoreHorizontal, TrendingUp, TrendingDown, Eye, Bell, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
-import Header from '@/components/Header';
+import { useNavigate } from 'react-router-dom';
 
 // Mock trading data
 const mockTrades = [
@@ -95,6 +94,7 @@ const chartConfig = {
 };
 
 const Trading = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('date');
@@ -205,7 +205,54 @@ const Trading = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      {/* Header - Updated to match Dashboard navigation */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo and Navigation */}
+            <div className="flex items-center space-x-8">
+              <div className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+                FinanceHub
+              </div>
+              <nav className="hidden md:flex items-center space-x-6">
+                <button 
+                  onClick={() => navigate('/dashboard')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Dashboard
+                </button>
+                <a href="/trading" className="text-blue-600 font-medium">Trading</a>
+                <button 
+                  onClick={() => navigate('/portfolio')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Portfolio
+                </button>
+                <a href="#" className="text-gray-600 hover:text-gray-900">Research</a>
+                <a href="#" className="text-gray-600 hover:text-gray-900">News</a>
+              </nav>
+            </div>
+
+            {/* Search and User Menu */}
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden sm:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  className="pl-10 w-64"
+                />
+              </div>
+              <Button variant="ghost" size="sm">
+                <Bell className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <User className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
       
       <main className="px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
