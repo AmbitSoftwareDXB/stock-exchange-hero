@@ -16,6 +16,11 @@ const AuditorLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Hardcoded credentials for testing
+  const HARDCODED_AUDITOR_ID = 'AUD98765';
+  const HARDCODED_MEMBER_ID = 'MEM54321';
+  const HARDCODED_PASSWORD = 'Auditor123';
+
   const validateForm = () => {
     const newErrors = { auditorId: '', memberId: '', password: '', general: '' };
     
@@ -57,10 +62,9 @@ const AuditorLogin = () => {
     
     setIsLoading(true);
     
-    // Simulate authentication
+    // Simulate authentication with hardcoded credentials
     setTimeout(() => {
-      // Simulate successful login for demo
-      if (auditorId && memberId && password) {
+      if (auditorId === HARDCODED_AUDITOR_ID && memberId === HARDCODED_MEMBER_ID && password === HARDCODED_PASSWORD) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('auditorId', auditorId);
         localStorage.setItem('memberId', memberId);
@@ -81,6 +85,14 @@ const AuditorLogin = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Auditor Login</h1>
           <p className="text-gray-600">Stock Exchange Auditor Access</p>
+          
+          {/* Test credentials display */}
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-left">
+            <p className="text-xs font-semibold text-yellow-800 mb-2">Test Credentials:</p>
+            <p className="text-xs text-yellow-700">Auditor ID: {HARDCODED_AUDITOR_ID}</p>
+            <p className="text-xs text-yellow-700">Member ID: {HARDCODED_MEMBER_ID}</p>
+            <p className="text-xs text-yellow-700">Password: {HARDCODED_PASSWORD}</p>
+          </div>
         </CardHeader>
 
         <CardContent>
