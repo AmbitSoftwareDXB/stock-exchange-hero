@@ -1,9 +1,17 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, X, User, Bell } from 'lucide-react';
+import { Search, Menu, X, User, Bell, LogOut, Settings, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -74,6 +82,7 @@ const Header = () => {
     localStorage.removeItem('memberId');
     localStorage.removeItem('auditorId');
     localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
     navigate('/');
   };
 
@@ -124,7 +133,39 @@ const Header = () => {
                 </button>
               </>
             )}
-            <Bell className="h-4 w-4 text-gray-500" />
+            
+            {/* Bell Icon with Dropdown for Authenticated Users */}
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="relative">
+                    <Bell className="h-4 w-4 text-gray-500" />
+                    <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    {isAuditor ? 'Auditor Account' : 'Member Account'}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Bell className="h-4 w-4 text-gray-500" />
+            )}
           </div>
         </div>
 
@@ -198,6 +239,17 @@ const Header = () => {
                   className="w-full"
                 />
               </div>
+              {/* Mobile Logout Option */}
+              {isAuthenticated && (
+                <div className="pt-4 border-t border-gray-200">
+                  <button 
+                    onClick={handleLogout}
+                    className="text-red-600 hover:text-red-800 transition-colors py-2 text-left w-full"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
