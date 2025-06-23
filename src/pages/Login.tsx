@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -85,14 +84,6 @@ const Login = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Member Login</h1>
           <p className="text-gray-600">Stock Exchange Member Access</p>
-          
-          {/* Test credentials display */}
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-left">
-            <p className="text-xs font-semibold text-yellow-800 mb-2">Test Credentials:</p>
-            <p className="text-xs text-yellow-700">Member ID: {HARDCODED_MEMBER_ID}</p>
-            <p className="text-xs text-yellow-700">User ID: {HARDCODED_USER_ID}</p>
-            <p className="text-xs text-yellow-700">Password: {HARDCODED_PASSWORD}</p>
-          </div>
         </CardHeader>
 
         <CardContent>
