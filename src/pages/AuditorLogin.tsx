@@ -10,14 +10,14 @@ import { useNavigate } from 'react-router-dom';
 const AuditorLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [auditorId, setAuditorId] = useState('');
-  const [userId, setUserId] = useState('');
+  const [memberId, setMemberId] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ auditorId: '', userId: '', password: '', general: '' });
+  const [errors, setErrors] = useState({ auditorId: '', memberId: '', password: '', general: '' });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateForm = () => {
-    const newErrors = { auditorId: '', userId: '', password: '', general: '' };
+    const newErrors = { auditorId: '', memberId: '', password: '', general: '' };
     
     // Auditor ID validation
     if (!auditorId) {
@@ -28,13 +28,13 @@ const AuditorLogin = () => {
       newErrors.auditorId = 'Auditor ID must be between 4 and 12 characters';
     }
     
-    // User ID validation
-    if (!userId) {
-      newErrors.userId = 'User ID is required';
-    } else if (!/^[a-zA-Z0-9]+$/.test(userId)) {
-      newErrors.userId = 'User ID must be alphanumeric';
-    } else if (userId.length < 4 || userId.length > 16) {
-      newErrors.userId = 'User ID must be between 4 and 16 characters';
+    // Member ID validation
+    if (!memberId) {
+      newErrors.memberId = 'Member ID is required';
+    } else if (!/^[a-zA-Z0-9]+$/.test(memberId)) {
+      newErrors.memberId = 'Member ID must be alphanumeric';
+    } else if (memberId.length < 4 || memberId.length > 16) {
+      newErrors.memberId = 'Member ID must be between 4 and 16 characters';
     }
     
     // Password validation
@@ -47,7 +47,7 @@ const AuditorLogin = () => {
     }
     
     setErrors(newErrors);
-    return !newErrors.auditorId && !newErrors.userId && !newErrors.password;
+    return !newErrors.auditorId && !newErrors.memberId && !newErrors.password;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,13 +60,13 @@ const AuditorLogin = () => {
     // Simulate authentication
     setTimeout(() => {
       // Simulate successful login for demo
-      if (auditorId && userId && password) {
+      if (auditorId && memberId && password) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('auditorId', auditorId);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem('memberId', memberId);
         navigate('/dashboard');
       } else {
-        setErrors({ ...errors, general: 'Invalid auditor credentials. Please check your Auditor ID, User ID, and Password.' });
+        setErrors({ ...errors, general: 'Invalid auditor credentials. Please check your Auditor ID, Member ID, and Password.' });
       }
       setIsLoading(false);
     }, 1500);
@@ -112,22 +112,22 @@ const AuditorLogin = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="userId">User ID</Label>
+              <Label htmlFor="memberId">Member ID</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  id="userId"
+                  id="memberId"
                   type="text"
-                  placeholder="Enter your User ID"
-                  value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  className={`pl-10 ${errors.userId ? 'border-red-500' : ''}`}
-                  aria-describedby={errors.userId ? 'userId-error' : undefined}
+                  placeholder="Enter your Member ID"
+                  value={memberId}
+                  onChange={(e) => setMemberId(e.target.value)}
+                  className={`pl-10 ${errors.memberId ? 'border-red-500' : ''}`}
+                  aria-describedby={errors.memberId ? 'memberId-error' : undefined}
                   maxLength={16}
                 />
               </div>
-              {errors.userId && (
-                <p id="userId-error" className="text-red-500 text-sm">{errors.userId}</p>
+              {errors.memberId && (
+                <p id="memberId-error" className="text-red-500 text-sm">{errors.memberId}</p>
               )}
             </div>
 
