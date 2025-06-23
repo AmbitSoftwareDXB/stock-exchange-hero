@@ -150,7 +150,12 @@ const Research = () => {
                 >
                   Portfolio
                 </button>
-                <a href="/research" className="text-blue-600 font-medium">Research</a>
+                <button 
+                  onClick={() => navigate('/research')} 
+                  className="text-blue-600 font-medium"
+                >
+                  Research
+                </button>
                 <a href="#" className="text-gray-600 hover:text-gray-900">News</a>
               </nav>
             </div>

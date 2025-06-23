@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Search, Bell, User, TrendingUp, TrendingDown, Download, Eye, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -88,7 +89,12 @@ const Dashboard = () => {
                 FinanceHub
               </div>
               <nav className="hidden md:flex items-center space-x-6">
-                <a href="/dashboard" className="text-blue-600 font-medium">Dashboard</a>
+                <button 
+                  onClick={() => navigate('/dashboard')} 
+                  className="text-blue-600 font-medium"
+                >
+                  Dashboard
+                </button>
                 <button 
                   onClick={() => navigate('/trading')} 
                   className="text-gray-600 hover:text-gray-900 transition-colors"
