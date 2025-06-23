@@ -25,6 +25,10 @@ const Header = () => {
     navigate('/login');
   };
 
+  const handleAuditorLoginClick = () => {
+    navigate('/auditor-login');
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
@@ -40,6 +44,12 @@ const Header = () => {
               className="text-sm text-blue-600 hover:text-blue-800 font-medium"
             >
               Member Login
+            </button>
+            <button 
+              onClick={handleAuditorLoginClick}
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Auditor Login
             </button>
             <Bell className="h-4 w-4 text-gray-500" />
           </div>
