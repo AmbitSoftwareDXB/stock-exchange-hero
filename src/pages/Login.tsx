@@ -249,15 +249,6 @@ const Login = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <a href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
-                Register here
-              </a>
-            </p>
-          </div>
-
           <div className="mt-4 text-center">
             <a href="#" className="text-xs text-gray-500 hover:text-gray-700">
               Need help? Contact support
