@@ -18,7 +18,7 @@ const Dashboard = () => {
   console.log('Is Member:', isMember);
 
   const handleNavigation = (path: string) => {
-    console.log(`Navigating to: ${path}`);
+    console.log(`Dashboard navigation clicked: ${path}`);
     navigate(path);
   };
 
@@ -509,9 +509,12 @@ const Dashboard = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo and Navigation */}
             <div className="flex items-center space-x-8">
-              <div className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+              <button 
+                onClick={() => handleNavigation('/')}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl hover:bg-blue-700 transition-colors"
+              >
                 FinanceHub
-              </div>
+              </button>
               <nav className="hidden md:flex items-center space-x-6">
                 <button 
                   onClick={() => handleNavigation('/dashboard')} 
@@ -537,7 +540,12 @@ const Dashboard = () => {
                 >
                   Research
                 </button>
-                <a href="#" className="text-gray-600 hover:text-gray-900">News</a>
+                <button 
+                  onClick={() => console.log('News clicked')}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  News
+                </button>
               </nav>
             </div>
 

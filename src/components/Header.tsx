@@ -9,16 +9,25 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleNavigation = (path: string) => {
+    console.log(`Navigating to: ${path}`);
+    navigate(path);
+  };
+
   const navItems = [
-    'Home',
-    'Market Data',
-    'Indices',
-    'IPOs',
-    'Products',
-    'Resources',
-    'Investor Education',
-    'About Us',
-    'Contact'
+    { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Trading', path: '/trading' },
+    { name: 'Portfolio', path: '/portfolio' },
+    { name: 'Research', path: '/research' },
+    { name: 'Market Data', path: '#' },
+    { name: 'Indices', path: '#' },
+    { name: 'IPOs', path: '#' },
+    { name: 'Products', path: '#' },
+    { name: 'Resources', path: '#' },
+    { name: 'Investor Education', path: '#' },
+    { name: 'About Us', path: '#' },
+    { name: 'Contact', path: '#' }
   ];
 
   const handleLoginClick = () => {
@@ -27,6 +36,13 @@ const Header = () => {
 
   const handleAuditorLoginClick = () => {
     navigate('/auditor-login');
+  };
+
+  const handleNavItemClick = (path: string) => {
+    console.log(`Header navigation clicked: ${path}`);
+    if (path !== '#') {
+      navigate(path);
+    }
   };
 
   return (
@@ -59,21 +75,24 @@ const Header = () => {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+            <button 
+              onClick={() => handleNavigation('/')}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl hover:bg-blue-700 transition-colors"
+            >
               FinanceHub
-            </div>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
+              <button
+                key={item.name}
+                onClick={() => handleNavItemClick(item.path)}
                 className="text-gray-700 hover:text-blue-600 transition-colors text-sm font-medium"
               >
-                {item}
-              </a>
+                {item.name}
+              </button>
             ))}
           </nav>
 
@@ -104,13 +123,16 @@ const Header = () => {
           <div className="lg:hidden py-4 border-t border-gray-200">
             <div className="flex flex-col space-y-3">
               {navItems.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="text-gray-700 hover:text-blue-600 transition-colors py-2"
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    handleNavItemClick(item.path);
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-gray-700 hover:text-blue-600 transition-colors py-2 text-left"
                 >
-                  {item}
-                </a>
+                  {item.name}
+                </button>
               ))}
               <div className="pt-4">
                 <Input
