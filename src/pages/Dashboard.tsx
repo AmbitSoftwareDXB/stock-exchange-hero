@@ -101,7 +101,12 @@ const Dashboard = () => {
                 >
                   Portfolio
                 </button>
-                <a href="#" className="text-gray-600 hover:text-gray-900">Research</a>
+                <button 
+                  onClick={() => navigate('/research')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Research
+                </button>
                 <a href="#" className="text-gray-600 hover:text-gray-900">News</a>
               </nav>
             </div>
