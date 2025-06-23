@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Menu, X, User, Bell, LogOut, Settings, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,10 +21,15 @@ const Header = () => {
   const isMember = localStorage.getItem('memberId') !== null && !isAuditor;
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
-  const handleNavigation = (path: string) => {
-    console.log(`Navigating to: ${path}`);
-    navigate(path);
-  };
+  // Debug logging
+  console.log('Header authentication state:', {
+    isAuthenticated,
+    isAuditor,
+    isMember,
+    auditorId: localStorage.getItem('auditorId'),
+    memberId: localStorage.getItem('memberId'),
+    userRole: localStorage.getItem('userRole')
+  });
 
   // Member navigation items
   const memberNavItems = [
@@ -78,6 +82,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    console.log('Logout clicked');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('memberId');
     localStorage.removeItem('auditorId');
@@ -143,7 +148,7 @@ const Header = () => {
                     <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-50">
                   <DropdownMenuLabel>
                     {isAuditor ? 'Auditor Account' : 'Member Account'}
                   </DropdownMenuLabel>
