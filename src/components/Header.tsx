@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Menu, X, User, Bell, LogOut, Settings, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -180,9 +181,13 @@ const Header = () => {
           <div className="flex items-center">
             <button 
               onClick={() => navigate('/')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-xl hover:bg-blue-700 transition-colors"
+              className="hover:opacity-80 transition-opacity"
             >
-              FinanceHub
+              <img 
+                src="/lovable-uploads/d15aa133-7bad-4e9d-8f52-fb81f9eea244.png" 
+                alt="India Stock Exchange" 
+                className="h-12 w-auto"
+              />
             </button>
           </div>
 
