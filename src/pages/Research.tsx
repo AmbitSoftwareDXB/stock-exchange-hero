@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import StockDirectory from '@/components/research/StockDirectory';
 import ResearchDetailsPanel from '@/components/research/ResearchDetailsPanel';
 import StockScreener from '@/components/research/StockScreener';
+import AuditReportDialog from '@/components/research/AuditReportDialog';
 
 // Mock Indian research data
 const mockStocks = [
@@ -134,6 +135,13 @@ const Research = () => {
   const [selectedRating, setSelectedRating] = useState('all');
   const [selectedStock, setSelectedStock] = useState<typeof mockStocks[0] | null>(null);
   const [watchlist, setWatchlist] = useState<number[]>([]);
+  const [selectedAuditReport, setSelectedAuditReport] = useState<{
+    id: number;
+    member: string;
+    date: string;
+    status: string;
+    risk: string;
+  } | null>(null);
 
   // Check user role
   const isAuditor = localStorage.getItem('auditorId') !== null;
@@ -193,6 +201,10 @@ const Research = () => {
         <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
       </TabsList>
     );
+  };
+
+  const handleViewAuditReport = (report: { id: number; member: string; date: string; status: string; risk: string }) => {
+    setSelectedAuditReport(report);
   };
 
   return (
@@ -447,7 +459,11 @@ const Research = () => {
                             <Badge variant={report.risk === 'High' ? 'destructive' : report.risk === 'Medium' ? 'secondary' : 'default'}>
                               {report.risk} Risk
                             </Badge>
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleViewAuditReport(report)}
+                            >
                               <Eye className="h-4 w-4 mr-2" />
                               View
                             </Button>
@@ -467,6 +483,15 @@ const Research = () => {
           <ResearchDetailsPanel 
             stock={selectedStock} 
             onClose={() => setSelectedStock(null)}
+          />
+        )}
+
+        {/* Audit Report Dialog */}
+        {selectedAuditReport && (
+          <AuditReportDialog 
+            isOpen={!!selectedAuditReport}
+            onClose={() => setSelectedAuditReport(null)}
+            memberReport={selectedAuditReport}
           />
         )}
       </main>
